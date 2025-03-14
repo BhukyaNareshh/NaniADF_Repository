@@ -1,0 +1,104 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfeltDemo2"
+		},
+		"LS_ADLSgen2Connection_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://nanistorage2.dfs.core.windows.net/"
+		},
+		"LS_AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://nanikeyvault.vault.azure.net/"
+		},
+		"LS_BlobTestConnection_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "BlobConnectionString"
+		},
+		"LS_HttpConnection_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().baseURL}"
+		},
+		"ds_SqlTable_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "SqlConnectionString"
+		},
+		"TR_EventTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/1a186575-ae71-4da2-b282-5edf6d346572/resourceGroups/TestRG001/providers/Microsoft.Storage/storageAccounts/naniistorage"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adfeltDemo2_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_AzureKeyVault1_properties_typeProperties_baseUrl": {
+						"value": "[parameters('LS_AzureKeyVault1_properties_typeProperties_baseUrl')]"
+					},
+					"LS_HttpConnection_properties_typeProperties_url": {
+						"value": "[parameters('LS_HttpConnection_properties_typeProperties_url')]"
+					},
+					"LS_ADLSgen2Connection_properties_typeProperties_url": {
+						"value": "[parameters('LS_ADLSgen2Connection_properties_typeProperties_url')]"
+					},
+					"LS_BlobTestConnection_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('LS_BlobTestConnection_properties_typeProperties_connectionString_secretName')]"
+					},
+					"ds_SqlTable_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('ds_SqlTable_properties_typeProperties_connectionString_secretName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adfeltDemo2_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"TR_EventTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('TR_EventTrigger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adfeltDemo2_ArmTemplate_0')]"
+			]
+		}
+	]
+}

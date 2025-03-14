@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfeltDemo2"
+		},
+		"LS_ADLSgen2Connection_properties_typeProperties_url": {
+			"value": "https://nanistorage2.dfs.core.windows.net/"
+		},
+		"LS_AzureKeyVault1_properties_typeProperties_baseUrl": {
+			"value": "https://nanikeyvault.vault.azure.net/"
+		},
+		"LS_BlobTestConnection_properties_typeProperties_connectionString_secretName": {
+			"value": "BlobConnectionString"
+		},
+		"LS_HttpConnection_properties_typeProperties_url": {
+			"value": "@{linkedService().baseURL}"
+		},
+		"ds_SqlTable_properties_typeProperties_connectionString_secretName": {
+			"value": "SqlConnectionString"
+		},
+		"TR_EventTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/1a186575-ae71-4da2-b282-5edf6d346572/resourceGroups/TestRG001/providers/Microsoft.Storage/storageAccounts/naniistorage"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
